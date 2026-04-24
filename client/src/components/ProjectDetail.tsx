@@ -1,4 +1,6 @@
-import { useState, useEffect, FormEvent } from 'react';
+import { useEffect } from 'react';
+import { useState } from 'react';
+import type { FormEvent } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import api from '../api';
 import { useAuth } from '../context/AuthContext';
