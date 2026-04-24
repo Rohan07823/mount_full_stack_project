@@ -1,0 +1,99 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model User {
+  id            String        @id @default(uuid())
+  email         String        @unique
+  password      String
+  name          String
+  ownedTeams    Team[]        @relation("OwnedTeams")
+  memberships   TeamMember[]
+  projects      Project[]
+  assignedStories Story[]     @relation("AssignedStories")
+  updates       Update[]
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+}
+
+model Team {
+  id          String       @id @default(uuid())
+  name        String
+  inviteCode  String       @unique
+  owner       User         @relation("OwnedTeams", fields: [ownerId], references: [id], onDelete: Cascade)
+  ownerId     String
+  members     TeamMember[]
+  projects    Project[]
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+}
+
+model TeamMember {
+  id        String   @id @default(uuid())
+  team      Team     @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  teamId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+  role      String   @default("MEMBER") // OWNER, MEMBER
+  joinedAt  DateTime @default(now())
+
+  @@unique([teamId, userId])
+}
+
+model Project {
+  id          String   @id @default(uuid())
+  name        String
+  description String?
+  team        Team     @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  teamId      String
+  creator     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId      String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  stories     Story[]
+}
+
+model Story {
+  id          String   @id @default(uuid())
+  title       String
+  description String?
+  status      String   @default("TODO") // TODO, IN_PROGRESS, DONE
+  project     Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  projectId   String
+  assignee    User?    @relation("AssignedStories", fields: [assigneeId], references: [id], onDelete: SetNull)
+  assigneeId  String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  tasks       Task[]
+  updates     Update[]
+}
+
+model Task {
+  id          String   @id @default(uuid())
+  title       String
+  isCompleted Boolean  @default(false)
+  story       Story    @relation(fields: [storyId], references: [id], onDelete: Cascade)
+  storyId     String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Update {
+  id        String   @id @default(uuid())
+  type      String   // PROGRESS, BLOCKER, NOTE
+  message   String
+  progress  Int?     // 0-100, only for PROGRESS type
+  story     Story    @relation(fields: [storyId], references: [id], onDelete: Cascade)
+  storyId   String
+  author    User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  authorId  String
+  resolved  Boolean  @default(false) // for BLOCKER type
+  createdAt DateTime @default(now())
+}

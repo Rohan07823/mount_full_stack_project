@@ -1,0 +1,13 @@
+{
+  "name": "agile-project-tool",
+  "version": "1.0.0",
+  "description": "Full-stack Agile Project Management Tool",
+  "scripts": {
+    "start": "concurrently \"npm run start --prefix server\" \"npm run dev --prefix client\"",
+    "install:all": "npm install && npm install --prefix server && npm install --prefix client"
+  },
+  "dependencies": {
+    "all": "^0.0.0",
+    "concurrently": "^8.2.2"
+  }
+}
