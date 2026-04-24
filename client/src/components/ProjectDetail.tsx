@@ -195,7 +195,7 @@ export default function ProjectDetail() {
     <div className="kanban-column">
       <h3>{title}</h3>
       {project.stories.filter((s) => s.status === status).map((story) => {
-        const completed = story.tasks.filter((t) => t.isCompleted).length;
+       // const completed = story.tasks.filter((t) => t.isCompleted).length;
         //const taskProgress = story.tasks.length === 0 ? 0 : Math.round((completed / story.tasks.length) * 100);
         const latestProgress = story.updates.find((u) => u.type === 'PROGRESS');
         const hasOpenBlocker = story.updates.some((u) => u.type === 'BLOCKER' && !u.resolved);
