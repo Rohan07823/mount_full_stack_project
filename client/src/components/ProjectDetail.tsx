@@ -3,7 +3,7 @@ import { useState } from 'react';
 import type { FormEvent } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import api from '../api';
-import { useAuth } from '../context/AuthContext';
+// import { useAuth } from '../context/AuthContext';
 
 interface Task { id: string; title: string; isCompleted: boolean; }
 
@@ -75,7 +75,7 @@ const Avatar = ({ name, size = 28 }: { name: string; size?: number }) => (
 
 export default function ProjectDetail() {
   const { id } = useParams<{ id: string }>();
-  const { user } = useAuth();
+  // const { user } = useAuth();
   const [project, setProject] = useState<Project | null>(null);
   const [storyTitle, setStoryTitle] = useState('');
   const [storyAssignee, setStoryAssignee] = useState('');
@@ -196,7 +196,7 @@ export default function ProjectDetail() {
       <h3>{title}</h3>
       {project.stories.filter((s) => s.status === status).map((story) => {
         const completed = story.tasks.filter((t) => t.isCompleted).length;
-        const taskProgress = story.tasks.length === 0 ? 0 : Math.round((completed / story.tasks.length) * 100);
+        //const taskProgress = story.tasks.length === 0 ? 0 : Math.round((completed / story.tasks.length) * 100);
         const latestProgress = story.updates.find((u) => u.type === 'PROGRESS');
         const hasOpenBlocker = story.updates.some((u) => u.type === 'BLOCKER' && !u.resolved);
 
