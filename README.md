@@ -1,3 +1,11 @@
+#walk through video link
+
+https://youtu.be/IAEVzb6cjHA?si=QWSwgf1pqho3fid4
+
+#demo link
+
+https://mount-full-stack-project-7.onrender.com/
+
 # Mount — Setup Guide
 
 A small Agile project management tool for teams of 3–10 people. Members share a workspace, create projects, break them into user stories, post progress updates, and call out blockers in a shared activity feed.
